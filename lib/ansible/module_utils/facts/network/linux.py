@@ -87,7 +87,7 @@ class LinuxNetwork(Network):
             # A valid output starts with the queried address on the first line
             if len(words) > 0 and words[0] == command[v][-1]:
                 for i in range(len(words) - 1):
-                    interface = get_default_interfaces_helper(words, interface, v, i)
+                    interface = get_default_interfaces_helper(words, interface, v, i, command)
 
         return interface['v4'], interface['v6']
 
