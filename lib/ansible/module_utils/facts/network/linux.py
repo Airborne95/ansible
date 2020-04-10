@@ -61,6 +61,15 @@ class LinuxNetwork(Network):
         network_facts['all_ipv6_addresses'] = ips['all_ipv6_addresses']
         return network_facts
 
+    def get_default_interfaces_helper(self, words, interface, v, i, command):
+        if words[i] == 'dev':
+            interface[v]['interface'] = words[i + 1]
+        elif words[i] == 'src':
+            interface[v]['address'] = words[i + 1]
+        elif words[i] == 'via' and words[i + 1] != command[v][-1]:
+            interface[v]['gateway'] = words[i + 1]
+        return interface
+
     def get_default_interfaces(self, ip_path, collected_facts={}):
         # Use the commands:
         #     ip -4 route get 8.8.8.8                     -> Google public DNS
@@ -90,15 +99,6 @@ class LinuxNetwork(Network):
                     interface = get_default_interfaces_helper(words, interface, v, i, command)
 
         return interface['v4'], interface['v6']
-
-    def get_default_interfaces_helper(self, words, interface, v, i, command):
-        if words[i] == 'dev':
-            interface[v]['interface'] = words[i + 1]
-        elif words[i] == 'src':
-            interface[v]['address'] = words[i + 1]
-        elif words[i] == 'via' and words[i + 1] != command[v][-1]:
-            interface[v]['gateway'] = words[i + 1]
-        return interface
 
     def get_interfaces_info(self, ip_path, default_ipv4, default_ipv6):
         interfaces = {}
