@@ -91,7 +91,7 @@ class LinuxNetwork(Network):
 
         return interface['v4'], interface['v6']
 
-    def get_default_interfaces_helper(words, interface, v, i, command):
+    def get_default_interfaces_helper(self, words, interface, v, i, command):
         if words[i] == 'dev':
             interface[v]['interface'] = words[i + 1]
         elif words[i] == 'src':
